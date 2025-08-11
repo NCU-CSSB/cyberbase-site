@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>南昌大学网络安全基地</title>
+    <meta charset="utf-8" />
+    
+    <!-- 内联样式 - 页头页尾模版样式 -->
+    <style>
+        /* 全局重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: rgb(255, 255, 255);
+            font-family: 'Microsoft YaHei', 'Arial', sans-serif;
+        }
+
+        /* 页头样式 */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            height: 115px;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.6) 50%, rgba(0, 0, 0, 0) 100%);
+        }
+
+        /* Cyberbase标识样式 */
+        .cyberbase-logo {
+            position: absolute;
+            top: 120px;
+            left: 55px;
+            font-size: 50px;
+            color: #f0f0f0;
+            text-align: center;
+            letter-spacing: 3px;
+            font-family: 'Zapfino', 'Arial', sans-serif;
+            font-style: italic;
+            font-weight: 600;
+            text-shadow: 
+                0 2px 4px rgba(0, 0, 0, 0.9),
+                0 4px 8px rgba(0, 0, 0, 0.7),
+                0 8px 16px rgba(0, 0, 0, 0.5),
+                0 0 20px rgba(255, 255, 255, 0.1),
+                0 0 40px rgba(0, 150, 255, 0.3);
+            z-index: 1000;
+            transform: skew(-5deg);
+            transition: all 0.3s ease;
+        }
+
+        .cyberbase-logo:hover {
+            transform: skew(-5deg) scale(1.05);
+            text-shadow: 
+                0 2px 4px rgba(0, 0, 0, 0.9),
+                0 4px 8px rgba(0, 0, 0, 0.7),
+                0 8px 16px rgba(0, 0, 0, 0.5),
+                0 0 30px rgba(255, 255, 255, 0.2),
+                0 0 60px rgba(0, 150, 255, 0.5);
+        }
+
+        /* 左侧容器布局 */
+        .header .left {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .header-logo {
+            margin-bottom: 0;
+        }
+
+        /* 导航样式 */
+        .header-nav {
+            margin-left: auto;
+            margin-right: 50px;
+        }
+
+        .bar1 {
+            font-size: 14px;
+            color: #ffffff;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .bar2 {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .bar2 a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 16px;
+            transition: color 0.3s ease;
+        }
+
+        .bar2 a:hover {
+            color: #00aaff;
+        }
+
+        .search {
+            margin-left: 20px;
+            cursor: pointer;
+        }
+
+        .search svg {
+            color: #ffffff;
+        }
+
+        /* 页脚样式 */
+        .footer {
+            background-color: #f5f5f5;
+            padding: 40px 0 20px 0;
+            margin-top: 50px;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-around;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .footer-content-logo img {
+            height: 60px;
+        }
+
+        .footer-text-item {
+            margin-bottom: 20px;
+        }
+
+        .footer-text-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333333;
+            margin-bottom: 10px;
+        }
+
+        .footer-text-content-item {
+            font-size: 14px;
+            color: #666666;
+            margin-bottom: 5px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .footer-text-content-item:hover {
+            color: #00aaff;
+        }
+
+        .bottom {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .light1 {
+            height: 1px;
+            background-color: #dddddd;
+            margin: 20px auto;
+            max-width: 800px;
+        }
+
+        .footer-extra {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0;
+        }
+
+        .footer-extra-left {
+            font-size: 17px;
+            color: #333333;
+            font-weight: 700;
+        }
+
+        .footer-extra-right {
+            font-size: 17px;
+            color: #888888;
+            margin-left: 25px;
+        }
+
+        .footer-extra-bottom {
+            font-size: 14px;
+            color: #999999;
+            margin-top: 20px;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .header-nav {
+                margin-right: 20px;
+            }
+            
+            .bar2 {
+                gap: 15px;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .cyberbase-logo {
+                font-size: 40px;
+                left: 30px;
+            }
+        }
+    </style>
+
+    <!-- 时间更新脚本 -->
+    <script>
+        function updateTime() {
+            const timeElement = document.querySelector('.bar1');
+            if (timeElement) {
+                const now = new Date();
+                const weekdays = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
+                
+                const timeString = `${now.getFullYear()}年${now.getMonth() + 1}月${now.getDate()}日${weekdays[now.getDay()]}${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
+                
+                timeElement.textContent = timeString;
+            }
+        }
+
+        // 页面加载完成后更新时间
+        document.addEventListener('DOMContentLoaded', function() {
+            updateTime();
+            setInterval(updateTime, 1000);
+        });
+    </script>
+</head>
+
+<body>
+    <!-- ==================== 页头模版开始 ==================== -->
+    <header class="header">
+        <div class="left">
+            <img class="header-logo" src="../assests/images/logo.png" alt="南昌大学">
+            <div class="cyberbase-logo">Cyberbase</div>
+        </div>
+        <div class="header-nav">
+            <div class="bar1">2025</div>
+            <div class="bar2">
+                <a href="../router/news.html">新闻</a>
+                <a href="../router/about.html">简介</a>
+                <a href="../router/student.html">学生主页</a>                        
+                <a href="../router/teacher.html">教师主页</a>
+                <a href="../router/contact.html">联系我们</a>
+                <a href="../router/netsec.html">网安靶场</a>
+                <a href="../router/login.html">注册登录</a>
+                <span class="search">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                </span>
+            </div>
+        </div>
+    </header>
+    <!-- ==================== 页头模版结束 ==================== -->
+
+    <!-- ==================== 页面内容区域 ==================== -->
+    <div class="main-content">
+        <!-- 在这里添加你的页面内容 -->
+        <h1>页面内容</h1>
+        <p>这是页面主要内容区域</p>
+    </div>
+
+    <!-- ==================== 页脚模版开始 ==================== -->
+    <div class="footer">
+        <div class="footer-content">
+            <div class="footer-content-logo">
+                <img src="../assests/images/logoft.png" alt="页脚Logo">
+            </div>
+            <div class="footer-content-text">
+                <div class="footer-text-item">
+                    <div class="footer-text-title">学校概况</div>
+                    <div class="footer-text-content">
+                        <div class="footer-text-content-item">学校简介</div>
+                        <div class="footer-text-content-item">现任领导</div>
+                    </div>
+                </div>
+
+                <div class="footer-text-item">
+                    <div class="footer-text-title">人才培养</div>
+                    <div class="footer-text-content">
+                        <div class="footer-text-content-item">师资队伍</div>
+                        <div class="footer-text-content-item">学科建设</div>
+                    </div>
+                </div>
+
+                <div class="footer-text-item">
+                    <div class="footer-text-title">联系我们</div>
+                    <div class="footer-text-content">
+                        <div class="footer-text-content-item">联系方式</div>
+                        <div class="footer-text-content-item">地址信息</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bottom">
+            <div class="light1"></div>
+            <div class="footer-extra">
+                <div class="footer-extra-left">友情链接 :</div>
+                <div class="footer-extra-right">南大家园</div>
+            </div>
+            <div class="light1"></div>  
+            <div class="footer-extra-bottom">
+                Copyright (c) 2014-2025 Nanchang University. All Rights Reserved.赣ICP备20001624号-1网备xxx号
+            </div>
+        </div>
+    </div>
+    <!-- ==================== 页脚模版结束 ==================== -->
+</body>
+</html>

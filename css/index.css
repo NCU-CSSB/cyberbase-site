@@ -1,0 +1,822 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: rgb(255, 255, 255);
+    /* background-image: url("../assests/images/bg.png"); */
+}
+
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;  /* 改为两端对齐，图片在左，导航在右 */
+    align-items: center;             /* 垂直居中对齐，确保在同一水平线 */
+    height: 115px;                   /* 父容器需明确高度 */
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.6) 50%, rgba(0, 0, 0, 0) 100%); /* 由上至下变淡的渐变 */
+}
+
+/* Cyberbase标识样式 - 绝对定位 */
+.cyberbase-logo {
+    position: absolute; /* 绝对定位 */
+    top: 120px; /* 距离顶部120px，在logo下方 */
+    left: 55px; /* 距离左侧50px，与logo对齐 */
+    font-size: 50px; /* 较大字体 */
+    color: #f0f0f0; /* 白色文字 */
+    text-align: center; /* 居中对齐 */
+    letter-spacing: 3px; /* 字母间距 */
+    font-family: 'Zapfino', 'Arial', sans-serif; /* 现代字体，带备用字体 */
+    font-style: italic; /* 斜体效果 */
+    font-weight: 600; /* 中等粗细，增强现代感 */
+    text-shadow: 
+        0 2px 4px rgba(0, 0, 0, 0.9), /* 主阴影 */
+        0 4px 8px rgba(0, 0, 0, 0.7), /* 第二层阴影 */
+        0 8px 16px rgba(0, 0, 0, 0.5), /* 第三层阴影 */
+        0 0 20px rgba(255, 255, 255, 0.1), /* 白色光晕效果 */
+        0 0 40px rgba(0, 150, 255, 0.3); /* 蓝色科技感光晕 */
+    z-index: 1000; /* 确保在其他元素之上 */
+    transform: skew(-5deg); /* 轻微倾斜，增加动感 */
+    transition: all 0.3s ease; /* 平滑过渡效果 */
+}
+
+/* 悬停效果 */
+.cyberbase-logo:hover {
+    transform: skew(-5deg) scale(1.05); /* 悬停时轻微放大 */
+    text-shadow: 
+        0 2px 4px rgba(0, 0, 0, 0.9),
+        0 4px 8px rgba(0, 0, 0, 0.7),
+        0 8px 16px rgba(0, 0, 0, 0.5),
+        0 0 30px rgba(255, 255, 255, 0.2), /* 增强白色光晕 */
+        0 0 60px rgba(0, 150, 255, 0.5); /* 增强蓝色光晕 */
+}
+
+/* 滚动后的样式 */
+.header.scrolled {
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.4) 50%, rgba(0, 0, 0, 0) 100%); /* 滚动后整体变浅 */
+}
+
+.header-logo {
+    width: 266.5px;
+    height: 75px;
+    margin-left: 50px;
+}   
+
+
+
+.header-nav {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;   /* 水平右对齐 */
+    gap: 10px;    /* 调整年份与导航的间距 */
+    margin-right: 60px;
+} 
+
+
+.bar1, .bar2 {
+    color: white;
+    font-family: "Microsoft YaHei";
+}
+
+.bar1 {
+    margin-right: 71px;
+}
+
+.bar2 {
+    display: flex;
+    gap: 50px;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: 700;
+    height: auto;
+    color: white;
+}
+.bar2 a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.banner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 图片填充整个区域，保持比例 */
+    object-position: center; /* 图片居中显示 */
+}
+
+/* Banner轮播样式 */
+/*----------------------------------------------------------------------------*/
+/* Banner轮播样式 */
+.banner-carousel {
+    position: relative;
+    width: 100vw; /* 使用视口宽度 */
+    height: 100vh; /* 使用视口高度 */
+    margin-top: 0px; /* 为固定header留出空间 */
+    overflow: hidden;
+}
+
+.carousel-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.carousel-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.carousel-slide.active {
+    opacity: 1;
+}
+
+.carousel-slide img,
+.carousel-slide video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 4s ease-in-out; /* 4秒变换动画 */
+    transform: scale(1); /* 初始状态：正常大小 */
+}
+
+/* 移除这个规则，让JavaScript控制 */
+/* .carousel-slide.active img {
+    transform: scale(1.1);
+} */
+
+.carousel-slide video {
+    object-position: center;
+}
+
+/* 轮播按钮样式 - 更大更透明，只显示三角形 */
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 70px; /* 增大按钮尺寸 */
+    height: 70px;
+    border-radius: 50%;
+    background-color: rgba(192, 188, 188, 0.1); /* 更透明 */
+    border: 2px solid rgba(207, 205, 205, 0.2); /* 更透明的边框 */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 15px rgba(153, 152, 152, 0.05); /* 更淡的阴影 */
+}
+
+.carousel-btn:hover {
+    background-color: rgba(255, 255, 255, 0.2); /* 悬停时稍微不透明 */
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+.carousel-btn:active {
+    transform: translateY(-50%) scale(0.95);
+}
+
+.prev-btn {
+    left: 30px;
+}
+
+.next-btn {
+    right: 30px;
+}
+
+/* 只显示一个三角形，更大更透明 */
+.prev-btn::before {
+    content: '';
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 6px 9px 6px 0; /* 更大的三角形 */
+    border-color: transparent rgba(255, 255, 255, 0.6) transparent transparent; /* 更透明 */
+    margin-left: 2px; /* 微调位置 */
+}
+
+.next-btn::before {
+    content: '';
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 6px 0 6px 9px; /* 更大的三角形 */
+    border-color: transparent transparent transparent rgba(255, 255, 255, 0.6); /* 更透明 */
+    margin-right: 2px; /* 微调位置 */
+}
+
+/* 悬停时三角形稍微不透明 */
+.prev-btn:hover::before {
+    border-color: transparent rgba(255, 255, 255, 0.8) transparent transparent;
+}
+
+.next-btn:hover::before {
+    border-color: transparent transparent transparent rgba(255, 255, 255, 0.8);
+}
+/*----------------------------------------------------------------------------*/
+/* 南昌大学官网图形样式 - 传统建筑结构 */
+/* linsvg样式 - 白色细线条，大尺寸，浮动定位 */
+.linsvg {
+    position: absolute;
+    bottom: 0px; /* 距离底部0px */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1000px; /* 更大的宽度 */
+    height: 400px; /* 更大的高度 */
+    z-index: 5;
+    pointer-events: none;
+    /* 浮动相关属性 */
+    float: left; /* 左浮动 */
+    clear: both; /* 清除浮动 */
+    margin: 0; /* 重置外边距 */
+}
+
+.linsvg svg {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* 保持SVG比例 */
+    display: block; /* 块级显示，配合浮动 */
+    margin-top: 125px;
+}
+
+/* SVG路径样式 - 线性点亮效果 */
+.linsvg .cls-bg {
+    fill: none; /* 无填充 */
+    stroke: rgba(255, 255, 255, 0.8); /* 白色线条，半透明 */
+    stroke-width: 2; /* 稍微粗一点的线条，因为尺寸变大了 */
+    stroke-linecap: round; /* 圆角线条端点 */
+    stroke-linejoin: round; /* 圆角线条连接点 */
+    opacity: 1; /* 保持可见 */
+    /* 线性点亮动画 */
+    stroke-dasharray: 4000; /* 增大虚线长度，确保能覆盖整个路径 */
+    stroke-dashoffset: 4000; /* 初始状态：完全隐藏 */
+    animation: linearLight 6s ease-out 1s forwards; /* 4秒线性点亮，forwards保持最终状态 */
+}
+
+.linsvg .cls-loop {
+    fill: none; /* 无填充 */
+    stroke: rgba(255, 255, 255, 0.6); /* 白色线条，更透明 */
+    stroke-width: 1.5; /* 更细的线条 */
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    opacity: 1; /* 保持可见 */
+    /* 线性点亮动画 */
+    stroke-dasharray: 4000; /* 增大虚线长度，确保能覆盖整个路径 */
+    stroke-dashoffset: 4000; /* 初始状态：完全隐藏 */
+    animation: linearLightLoop 3.5s ease-out 1s forwards; /* 3.5秒线性点亮，forwards保持最终状态 */
+}
+
+/* 线性点亮动画关键帧 */
+@keyframes linearLight {
+    0% {
+        stroke-dashoffset: 5000; /* 从完全隐藏开始 */
+    }
+    100% {
+        stroke-dashoffset: 0; /* 完全显示 - 恢复原样 */
+    }
+}
+
+/* 为循环线条设置不同的动画时长 */
+@keyframes linearLightLoop {
+    0% {
+        stroke-dashoffset: 4000; /* 从完全隐藏开始 */
+    }
+    100% {
+        stroke-dashoffset: 0; /* 完全显示 - 恢复原样 */
+    }
+}
+
+/* 响应式调整 */
+@media (max-width: 1200px) {
+    .linsvg {
+        width: 800px;
+        height: 350px;
+    }
+}
+
+@media (max-width: 768px) {
+    .linsvg {
+        width: 600px;
+        height: 250px;
+    }
+}
+
+@media (max-width: 480px) {
+    .linsvg {
+        width: 400px;
+        height: 200px;
+    }
+}
+
+/*----------------------------------------------------------------------------*/
+
+.footer-content {
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 80px;
+}
+
+.footer-content-logo img{
+    width: 320px;
+    height: 90px;
+}
+
+
+.footer-content-text {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap:100px;
+}
+
+.footer-text-item {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.footer-text-title {
+    position: relative;
+    font-size: 18px;
+    font-weight: 700;
+    color: rgb(51, 51, 51)
+}
+
+.footer-text-title::after {
+    content: '';
+    position: absolute;
+    bottom: -15px; /* 距离文字的距离 */
+    left: 0;
+    width: 20px; /* 下划线的宽度 */
+    height: 3px; /* 下划线的高度 */
+    background-color: #e74c3c; /* 红色，你可以调整颜色 */
+    border-radius: 2px; /* 圆角效果 */
+}
+
+.footer-text-content-item {
+    font-size: 17px;
+    color: rgb(136, 136, 136);
+}
+
+.footer-text-content {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.light1 {
+    width: 100%; /* 设置为80%宽度 */
+    height: 2px;
+    background-color: #e0e0e0;
+    margin: 25px 0;
+}
+
+.footer-extra {
+    display: flex;
+    flex-direction: row;
+}
+
+.footer-extra-left {
+    font-size: 17px;
+    color: #333333;
+    font-weight: 700;
+}
+
+.footer-extra-right {
+    font-size: 17px;
+    color: #888888;
+    margin-left: 25px;
+}
+
+.bottom {
+    margin-left: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+/*first edition:neuroblue*/
+
+
+
+/* 调整左侧容器布局 */
+.header .left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 确保logo和cyberbase文字垂直居中对齐 */
+.header-logo {
+    margin-bottom: 0; /* 移除可能的下边距 */
+}
+
+/* 新闻页样式 */
+.news-section {
+    padding: 40px 0;
+    background-color: #ffffff;
+    margin-top: 50px;
+}
+
+.news-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    gap: 40px;
+    padding: 0 20px;
+}
+
+/* 左侧：南大要闻 */
+.news-main {
+    flex: 2;
+}
+
+.news-title {
+    font-size: 28px;
+    font-weight: bold;
+    color: #333333;
+    margin-bottom: 30px;
+    border-bottom: 3px solid #e74c3c;
+    padding-bottom: 10px;
+}
+
+/* 主要新闻 */
+.featured-news {
+    margin-bottom: 30px;
+    transition: all 0.5s ease;
+}
+
+.featured-news:hover {
+    transform: scale(1.05);
+    z-index: 100;
+}
+
+.featured-news:hover .news-image-container img {
+    transform: scale(1.1);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+}
+
+.news-image-container {
+    position: relative;
+    margin-bottom: 20px;
+    overflow: hidden;
+    border-radius: 8px;
+    transition: all 0.5s ease;
+}
+
+.news-image-container img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 8px;
+    transition: all 0.5s ease;
+}
+
+/* 悬停时的文字效果 */
+.featured-news:hover .news-headline {
+    color: #e74c3c;
+    transform: translateY(-2px);
+}
+
+.featured-news:hover .news-summary {
+    color: #555;
+}
+
+.news-headline {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 15px;
+    line-height: 1.4;
+    transition: all 0.3s ease;
+}
+
+.news-summary {
+    font-size: 16px;
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+}
+
+/* 分页 */
+.news-pagination {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.news-pagination .page {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.news-pagination .page.active {
+    background-color: #e74c3c;
+    color: white;
+    border-color: #e74c3c;
+}
+
+.news-pagination .page:hover {
+    background-color: #f8f9fa;
+}
+
+/* 新闻列表 */
+.news-list {
+    border-top: 1px solid #eee;
+    padding-top: 20px;
+}
+
+.news-item {
+    display: flex;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background-color 0.3s ease;
+}
+
+.news-item:hover {
+    background-color: #f8f9fa;
+}
+
+.news-arrow {
+    color: #999;
+    margin-right: 10px;
+    font-size: 12px;
+}
+
+.news-text {
+    flex: 1;
+    font-size: 16px;
+    color: #333;
+    line-height: 1.4;
+}
+
+.news-date-text {
+    color: #999;
+    font-size: 14px;
+    margin-left: 20px;
+}
+
+/* 右侧：侧边栏 - 透明简约黑白配 */
+.news-sidebar {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
+    border-radius: 12px;
+    padding: 25px;
+    color: #333;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    position: relative;
+}
+
+/* 标签页 */
+.sidebar-tabs {
+    display: flex;
+    margin-bottom: 25px;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-tabs .tab {
+    padding: 12px 24px;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.3s ease;
+    color: #666;
+    font-weight: 500;
+}
+
+.sidebar-tabs .tab.active {
+    border-bottom-color: #000;
+    font-weight: bold;
+    color: #000;
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.sidebar-tabs .tab:hover {
+    background: rgba(0, 0, 0, 0.08);
+    color: #333;
+}
+
+/* 侧边栏内容 */
+.sidebar-content {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.sidebar-item {
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.sidebar-item:hover {
+    background: rgba(0, 0, 0, 0.03);
+    padding-left: 8px;
+    border-left: 2px solid #000;
+}
+
+.sidebar-date {
+    font-size: 13px;
+    color: #999;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.sidebar-text {
+    font-size: 14px;
+    color: #333;
+    line-height: 1.5;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    font-weight: 400;
+}
+
+.sidebar-text:hover {
+    color: #000;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .news-container {
+        flex-direction: column;
+        gap: 30px;
+    }
+    
+    .news-title {
+        font-size: 24px;
+    }
+    
+    .news-headline {
+        font-size: 18px;
+    }
+    
+    .news-sidebar {
+        order: -1; /* 在移动端，侧边栏显示在上方 */
+    }
+}
+
+.intro-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+    background-color: #ffffff;
+    margin-top: 20px;
+}
+
+.intro-image-container img {
+    width: 50%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.intro-description-section {
+    width: 50%;
+    height: 100%;
+}
+
+
+/* comeon banner 样式 */
+.comeon {
+    position: relative;
+    width: 100%;
+    height: 400px; /* 设置固定高度 */
+    overflow: hidden;
+}
+
+.comeon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* 添加文字覆盖层 */
+.comeon::after {
+    content: "COME JOIN US";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 48px;
+    font-weight: 900;
+    color: #ffffff;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
+    z-index: 10;
+    font-family: 'Arial', sans-serif;
+}
+
+/* 可选：添加半透明遮罩让文字更清晰 */
+.comeon::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 5;
+}
+
+
+/* 简介标题样式 */
+.intro-title {
+    font-size: 32px;
+    font-weight: 900;
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 40px;
+    color: #000000;
+    letter-spacing: 2px;
+}
+
+.intro-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 60px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    background-color: #ffffff;
+}
+
+/* 左侧图片容器 */
+.intro-image-container {
+    flex: 1;
+    max-width: 500px;
+}
+
+.intro-image-container img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* 右侧描述区域 */
+.intro-description-section {
+    flex: 1;
+    max-width: 500px;
+}
+
+.intro-description-content {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #333333;
+    text-align: justify;
+}
+    
+
+/* 彩色分割线样式 */
+.colorful-divider {
+    height: 3px;
+    background: repeating-linear-gradient(
+        to right,
+        #4CAF50 0px,    /* 绿色 */
+        #4CAF50 60px,
+        #000000 60px,   /* 黑色 */
+        #000000 120px,
+        #F44336 120px,  /* 红色 */
+        #F44336 180px,
+        #FF9800 180px,  /* 金色 */
+        #FF9800 240px,
+        #2196F3 240px,  /* 蓝色 */
+        #2196F3 300px
+    );
+    background-size: 300px 8px;
+    margin: 40px 40px 20px 20px;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
